@@ -127,3 +127,26 @@ client/
 * Better AI prompt tuning
 
 ---
+
+## 🗄️ Database Schema
+
+### User
+- name: String
+- email: String (unique)
+- password: String (hashed)
+- role: employee | manager | admin
+- createdAt, updatedAt
+
+### LeaveRequest
+- userId: ObjectId (ref User)
+- type: Sick | Casual | WFH | Comp-off
+- startDate: Date
+- endDate: Date
+- reason: String
+- workingDays: Number
+- status: pending | approved | rejected
+- managerId: ObjectId (ref User)
+- comment: String
+- createdAt, updatedAt
+
+--

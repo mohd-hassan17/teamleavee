@@ -96,3 +96,54 @@ Tasks:
 Keep implementation simple and correct.
 
 ---
+
+Fix Gemini AI integration and improve UI responsiveness in my full-stack app.
+
+Issues:
+- Error: model "gemini-1.5-flash" not found
+- AI feature not working on admin/manager page
+- UI is not fully responsive or polished
+
+Tasks:
+
+1. Fix Gemini API:
+- Replace model with "gemini-1.5-flash-latest"
+- Ensure correct SDK usage (Google Generative AI)
+- Use generateContent properly
+- Add error handling for AI response
+- Ensure response is valid JSON for leave parsing
+
+2. Backend AI endpoints:
+- Fix /api/ai/parse-leave
+- Fix /api/ai/manager-insight
+- Ensure both endpoints return structured JSON
+
+3. Improve frontend AI integration:
+- Call AI APIs correctly
+- Show loading state while AI response is processing
+- Handle errors gracefully
+
+4. UI Improvements (IMPORTANT):
+- Use Tailwind CSS properly
+- Make layout fully responsive:
+  - Mobile (stack layout)
+  - Tablet
+  - Desktop (grid/cards)
+- Improve:
+  - Dashboard cards
+  - Forms spacing
+  - Buttons (hover, padding)
+  - Navbar responsiveness
+
+5. Clean structure:
+- Separate components (Form, Card, Navbar)
+- Avoid large single files
+
+6. Keep UI simple but professional (no overdesign)
+
+Goal:
+- AI feature works correctly
+- UI looks clean and responsive
+- No runtime errors
+
+--

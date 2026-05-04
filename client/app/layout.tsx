@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Employee Portal Auth",
-  description: "JWT authentication frontend",
+  title: "Leave Management",
+  description: "Leave management frontend",
 };
 
 export default function RootLayout({

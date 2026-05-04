@@ -8,12 +8,13 @@ import { useAuth } from "../hooks/useAuth";
 const navItems = [
   { href: "/dashboard", label: "Dashboard" },
   { href: "/apply-leave", label: "Apply Leave" },
+  { href: "/manager", label: "Manager" },
 ];
 
 export default function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
-  const { isAuthenticated, logout } = useAuth();
+  const { isAuthenticated, logout, user } = useAuth();
 
   const handleLogout = () => {
     logout();
@@ -29,7 +30,9 @@ export default function Navbar() {
 
         <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
           {isAuthenticated
-            ? navItems.map((item) => (
+            ? navItems
+                .filter((item) => item.href !== "/manager" || user?.role === "manager" || user?.role === "admin")
+                .map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}

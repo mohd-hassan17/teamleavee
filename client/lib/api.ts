@@ -1,3 +1,5 @@
+import axios from "axios";
+
 export type AuthUser = {
   id: string;
   name: string;
@@ -10,25 +12,42 @@ export type AuthResponse = {
   user: AuthUser;
 };
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+export type RegisterUserData = {
+  name: string;
+  email: string;
+  password: string;
+  role: AuthUser["role"];
+};
 
-export const authRequest = async (
-  path: "/api/auth/signup" | "/api/auth/login",
-  body: Record<string, string>
-): Promise<AuthResponse> => {
-  const response = await fetch(`${API_URL}${path}`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(body),
-  });
+const api = axios.create({
+  baseURL: "http://localhost:5001/api",
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
 
-  const data = await response.json();
-
-  if (!response.ok) {
-    throw new Error(data.message || "Authentication failed");
+const getErrorMessage = (error: unknown) => {
+  if (axios.isAxiosError<{ message?: string }>(error)) {
+    return error.response?.data?.message || error.message || "Request failed";
   }
 
-  return data;
+  return "Something went wrong";
+};
+
+export const loginUser = async (email: string, password: string): Promise<AuthResponse> => {
+  try {
+    const response = await api.post<AuthResponse>("/auth/login", { email, password });
+    return response.data;
+  } catch (error) {
+    throw new Error(getErrorMessage(error));
+  }
+};
+
+export const registerUser = async (data: RegisterUserData): Promise<AuthResponse> => {
+  try {
+    const response = await api.post<AuthResponse>("/auth/signup", data);
+    return response.data;
+  } catch (error) {
+    throw new Error(getErrorMessage(error));
+  }
 };

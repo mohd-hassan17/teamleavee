@@ -11,6 +11,8 @@ const createToken = (userId) => {
 };
 
 router.post("/signup", async (req, res) => {
+  console.log("Signup route hit");
+
   try {
     const { name, email, password, role = "employee" } = req.body;
     const normalizedEmail = email?.toLowerCase().trim();
@@ -52,10 +54,13 @@ router.post("/signup", async (req, res) => {
     }
 
     res.status(500).json({ message: "Signup failed" });
+    console.log(error);
   }
 });
 
 router.post("/login", async (req, res) => {
+  console.log("Login route hit");
+
   try {
     const { email, password } = req.body;
     const normalizedEmail = email?.toLowerCase().trim();

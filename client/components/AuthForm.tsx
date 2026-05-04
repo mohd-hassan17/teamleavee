@@ -2,7 +2,7 @@
 
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
-import { AuthUser, authRequest } from "../lib/api";
+import { AuthUser, RegisterUserData, loginUser, registerUser } from "../lib/api";
 import { useAuth } from "../hooks/useAuth";
 import Button from "./Button";
 import Card from "./Card";
@@ -28,12 +28,10 @@ export default function AuthForm() {
     setMessage("");
 
     try {
-      const body: Record<string, string> =
-        mode === "signup" ? { name, email, password, role } : { email, password };
-      const auth = await authRequest(
-        mode === "signup" ? "/api/auth/signup" : "/api/auth/login",
-        body
-      );
+      const auth =
+        mode === "signup"
+          ? await registerUser({ name, email, password, role } satisfies RegisterUserData)
+          : await loginUser(email, password);
 
       saveSession(auth);
       router.push("/dashboard");

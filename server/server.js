@@ -13,8 +13,8 @@ if (!process.env.JWT_SECRET) {
   throw new Error("JWT_SECRET is required");
 }
 
-app.use(cors());
 app.use(express.json());
+app.use(cors());
 
 app.get("/", (req, res) => {
   res.json({ message: "API is running" });

@@ -25,6 +25,7 @@ export default function ManagerDashboard() {
   const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [busyId, setBusyId] = useState("");
+  const [insightLoadingId, setInsightLoadingId] = useState("");
 
   const loadRequests = useCallback(async () => {
     setIsLoading(true);
@@ -67,7 +68,7 @@ export default function ManagerDashboard() {
   };
 
   const loadInsight = async (leave: LeaveRequest) => {
-    setBusyId(leave._id);
+    setInsightLoadingId(leave._id);
     setMessage("");
 
     try {
@@ -79,13 +80,13 @@ export default function ManagerDashboard() {
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "Could not load AI insight");
     } finally {
-      setBusyId("");
+      setInsightLoadingId("");
     }
   };
 
   return (
     <div className="space-y-6">
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
         <DashboardCard title="Pending Requests" value={String(requests.length)} detail="Awaiting action" />
         <DashboardCard title="Team Coverage" value="AI" detail="Use insight per request" />
         <DashboardCard title="Queue Status" value={isLoading ? "..." : "Ready"} detail="Current manager view" />
@@ -94,9 +95,9 @@ export default function ManagerDashboard() {
       {message ? <p className="rounded-md bg-rose-50 px-3 py-2 text-sm text-rose-700">{message}</p> : null}
 
       <Card>
-        <div className="flex items-center justify-between gap-3">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <h2 className="text-lg font-semibold text-slate-950">Pending leave requests</h2>
-          <Button type="button" variant="secondary" onClick={() => void loadRequests()}>
+          <Button type="button" variant="secondary" onClick={() => void loadRequests()} className="w-full sm:w-auto">
             Refresh
           </Button>
         </div>
@@ -107,7 +108,7 @@ export default function ManagerDashboard() {
             <p className="text-sm text-slate-600">No pending leave requests.</p>
           ) : null}
           {requests.map((request) => (
-            <div key={request._id} className="rounded-md border border-slate-200 p-4">
+            <div key={request._id} className="rounded-lg border border-slate-200 bg-slate-50/40 p-4">
               <div className="grid gap-4 lg:grid-cols-[1fr_auto]">
                 <div>
                   <p className="font-medium text-slate-950">
@@ -120,7 +121,7 @@ export default function ManagerDashboard() {
                   <p className="mt-3 text-sm text-slate-700">{request.reason}</p>
                 </div>
 
-                <div className="flex flex-col gap-2 sm:flex-row lg:flex-col">
+                <div className="grid gap-2 sm:grid-cols-3 lg:w-36 lg:grid-cols-1">
                   <Button
                     type="button"
                     onClick={() => void decide(request._id, "approve")}
@@ -140,15 +141,21 @@ export default function ManagerDashboard() {
                     type="button"
                     variant="secondary"
                     onClick={() => void loadInsight(request)}
-                    disabled={busyId === request._id}
+                    disabled={insightLoadingId === request._id}
                   >
-                    AI insight
+                    {insightLoadingId === request._id ? "Thinking..." : "AI insight"}
                   </Button>
                 </div>
               </div>
 
+              {insightLoadingId === request._id ? (
+                <div className="mt-4 rounded-md border border-teal-100 bg-white p-3 text-sm text-slate-600">
+                  Generating AI insight...
+                </div>
+              ) : null}
+
               {insights[request._id] ? (
-                <div className="mt-4 rounded-md bg-teal-50 p-3 text-sm text-teal-900">
+                <div className="mt-4 rounded-md border border-teal-100 bg-teal-50 p-3 text-sm text-teal-900">
                   <p className="font-semibold">Summary</p>
                   <p className="mt-1">{insights[request._id].summary}</p>
                   <p className="mt-3 font-semibold">Recommendation</p>

@@ -22,21 +22,25 @@ export default function Navbar() {
   };
 
   return (
-    <header className="border-b border-slate-200 bg-white">
-      <nav className="mx-auto flex w-full max-w-6xl flex-col gap-3 px-5 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-8">
+    <header className="border-b border-slate-200 bg-white/95">
+      <nav className="mx-auto flex w-full max-w-6xl flex-col gap-4 px-4 py-4 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
         <Link href="/dashboard" className="text-lg font-semibold text-slate-950">
-          Employee Portal
+          Leave Manager
         </Link>
 
-        <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
-          {isAuthenticated
-            ? navItems
-                .filter((item) => item.href !== "/manager" || user?.role === "manager" || user?.role === "admin")
+        <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
+          {isAuthenticated ? (
+            <div className="grid gap-2 sm:flex sm:flex-wrap sm:items-center">
+              {navItems
+                .filter(
+                  (item) =>
+                    item.href !== "/manager" || user?.role === "manager" || user?.role === "admin"
+                )
                 .map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`rounded-md px-3 py-2 text-sm font-medium transition ${
+                  className={`rounded-md px-3 py-2 text-center text-sm font-medium transition ${
                     pathname === item.href
                       ? "bg-teal-50 text-teal-800"
                       : "text-slate-600 hover:bg-slate-100"
@@ -44,8 +48,9 @@ export default function Navbar() {
                 >
                   {item.label}
                 </Link>
-              ))
-            : null}
+                ))}
+            </div>
+          ) : null}
 
           {isAuthenticated ? (
             <Button type="button" variant="secondary" onClick={handleLogout} className="w-full sm:w-auto">

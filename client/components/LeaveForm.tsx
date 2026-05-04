@@ -118,32 +118,51 @@ export default function LeaveForm({ onSubmitted }: LeaveFormProps) {
   };
 
   return (
-    <Card className="w-full">
-      <div className="mb-5 grid gap-3 lg:grid-cols-[1fr_auto_auto] lg:items-end">
+    <Card className="w-full overflow-hidden">
+      <div className="mb-5 border-b border-slate-200 pb-4">
+        <h2 className="text-lg font-semibold text-slate-950">Apply for leave</h2>
+        <p className="mt-1 text-sm text-slate-600">Fill the form manually, or let AI draft it from a short request.</p>
+      </div>
+
+      <div className="mb-6 rounded-lg border border-teal-100 bg-teal-50/70 p-4">
         <label className="block">
-          <span className="text-sm font-medium text-slate-700">AI request</span>
+          <span className="text-sm font-semibold text-slate-800">AI assistant</span>
           <textarea
             value={aiText}
             onChange={(event) => setAiText(event.target.value)}
-            className="mt-2 min-h-20 w-full rounded-md border border-slate-300 px-3 py-2 text-sm outline-none transition focus:border-teal-600 focus:ring-2 focus:ring-teal-100"
+            className="mt-2 min-h-24 w-full rounded-md border border-teal-200 bg-white px-3 py-2 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-teal-600 focus:ring-2 focus:ring-teal-100"
             placeholder="I need sick leave from 2026-05-12 to 2026-05-14 for fever"
           />
         </label>
-        <Button type="button" variant="secondary" onClick={() => void fillFromText(aiText)} disabled={isAiLoading}>
-          {isAiLoading ? "Reading..." : "Use AI"}
-        </Button>
-        <Button type="button" variant="secondary" onClick={startVoiceInput} disabled={isListening || isAiLoading}>
-          {isListening ? "Listening..." : "Voice"}
-        </Button>
+        <div className="mt-3 grid gap-2 sm:grid-cols-2">
+          <Button
+            type="button"
+            variant="secondary"
+            onClick={() => void fillFromText(aiText)}
+            disabled={isAiLoading}
+            className="w-full border-teal-200"
+          >
+            {isAiLoading ? "Generating..." : "Use AI"}
+          </Button>
+          <Button
+            type="button"
+            variant="secondary"
+            onClick={startVoiceInput}
+            disabled={isListening || isAiLoading}
+            className="w-full border-teal-200"
+          >
+            {isListening ? "Listening..." : "Use voice"}
+          </Button>
+        </div>
       </div>
 
-      <form onSubmit={handleSubmit} className="grid gap-4 sm:grid-cols-2">
+      <form onSubmit={handleSubmit} className="grid gap-5 md:grid-cols-2">
         <label className="block">
           <span className="text-sm font-medium text-slate-700">Leave type</span>
           <input
             value={form.type}
             onChange={(event) => updateField("type", event.target.value)}
-            className="mt-2 h-11 w-full rounded-md border border-slate-300 px-3 text-sm outline-none transition focus:border-teal-600 focus:ring-2 focus:ring-teal-100"
+            className="mt-2 h-11 w-full rounded-md border border-slate-300 bg-white px-3 text-sm outline-none transition focus:border-teal-600 focus:ring-2 focus:ring-teal-100"
             placeholder="Sick, casual, earned"
             required
           />
@@ -155,7 +174,7 @@ export default function LeaveForm({ onSubmitted }: LeaveFormProps) {
             type="date"
             value={form.startDate}
             onChange={(event) => updateField("startDate", event.target.value)}
-            className="mt-2 h-11 w-full rounded-md border border-slate-300 px-3 text-sm outline-none transition focus:border-teal-600 focus:ring-2 focus:ring-teal-100"
+            className="mt-2 h-11 w-full rounded-md border border-slate-300 bg-white px-3 text-sm outline-none transition focus:border-teal-600 focus:ring-2 focus:ring-teal-100"
             required
           />
         </label>
@@ -166,31 +185,40 @@ export default function LeaveForm({ onSubmitted }: LeaveFormProps) {
             type="date"
             value={form.endDate}
             onChange={(event) => updateField("endDate", event.target.value)}
-            className="mt-2 h-11 w-full rounded-md border border-slate-300 px-3 text-sm outline-none transition focus:border-teal-600 focus:ring-2 focus:ring-teal-100"
+            className="mt-2 h-11 w-full rounded-md border border-slate-300 bg-white px-3 text-sm outline-none transition focus:border-teal-600 focus:ring-2 focus:ring-teal-100"
             required
           />
         </label>
 
-        <label className="block sm:col-span-2">
+        <label className="block md:col-span-2">
           <span className="text-sm font-medium text-slate-700">Reason</span>
           <textarea
             value={form.reason}
             onChange={(event) => updateField("reason", event.target.value)}
-            className="mt-2 min-h-28 w-full rounded-md border border-slate-300 px-3 py-2 text-sm outline-none transition focus:border-teal-600 focus:ring-2 focus:ring-teal-100"
+            className="mt-2 min-h-28 w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm outline-none transition focus:border-teal-600 focus:ring-2 focus:ring-teal-100"
             placeholder="Add a short reason"
             required
           />
         </label>
 
-        <div className="sm:col-span-2">
-          <Button type="submit" className="w-full sm:w-auto" disabled={isSubmitting}>
+        <div className="flex flex-col gap-3 border-t border-slate-200 pt-5 md:col-span-2 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-sm text-slate-500">Weekends are excluded from leave day calculation.</p>
+          <Button type="submit" className="w-full sm:w-auto sm:min-w-40" disabled={isSubmitting}>
             {isSubmitting ? "Submitting..." : "Submit request"}
           </Button>
         </div>
       </form>
 
       {message ? (
-        <p className="mt-4 rounded-md bg-teal-50 px-3 py-2 text-sm text-teal-800">{message}</p>
+        <p
+          className={`mt-4 rounded-md px-3 py-2 text-sm ${
+            message.toLowerCase().includes("failed") || message.toLowerCase().includes("required")
+              ? "bg-rose-50 text-rose-700"
+              : "bg-teal-50 text-teal-800"
+          }`}
+        >
+          {message}
+        </p>
       ) : null}
     </Card>
   );

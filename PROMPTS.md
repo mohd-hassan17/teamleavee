@@ -71,3 +71,28 @@ Fix:
 Refactored into proper structure manually
 
 ---
+
+Fix leave apply API issue in my full-stack app.
+
+Issues:
+- Leave apply is not working
+
+Tasks:
+1. Verify backend route:
+   POST /api/leave/apply
+   with authentication middleware
+
+2. Ensure request body validation:
+   type, startDate, endDate, reason
+
+3. Ensure JWT token is required and validated
+
+4. Fix frontend API call:
+   - Correct endpoint
+   - Send Authorization header with Bearer token
+
+5. Add debug logs to track request and errors
+
+Keep implementation simple and correct.
+
+---

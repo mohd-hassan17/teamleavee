@@ -72,6 +72,8 @@ Refactored into proper structure manually
 
 ---
 
+## Prompt 6
+
 Fix leave apply API issue in my full-stack app.
 
 Issues:
@@ -96,6 +98,8 @@ Tasks:
 Keep implementation simple and correct.
 
 ---
+
+## Prompt 7
 
 Fix Gemini AI integration and improve UI responsiveness in my full-stack app.
 
@@ -146,4 +150,64 @@ Goal:
 - UI looks clean and responsive
 - No runtime errors
 
+--
+
+## Prompt 8
+
+Review and fix the Admin and Manager dashboard UI in my Next.js app.
+
+Issues:
+- Leave table UI is not properly structured
+- Layout is not responsive
+- Data is not clearly readable
+
+Tasks:
+
+1. Fix Leave Table UI:
+- Display columns clearly:
+  - Employee Name
+  - Leave Type
+  - Start Date
+  - End Date
+  - Status (pending/approved/rejected)
+  - Manager Comment
+- Add proper spacing, alignment, and borders
+- Use table or responsive card layout
+
+2. Improve UI Design:
+- Use Tailwind CSS properly
+- Add:
+  - padding, margin
+  - hover effects
+  - rounded cards
+  - clean typography
+
+3. Make it Responsive:
+- Desktop: table view
+- Mobile: stacked card layout
+- Ensure no overflow or broken layout
+
+4. Manager Actions:
+- Add Approve and Reject buttons clearly
+- Buttons should be visible and styled
+- Disable buttons after action
+
+5. Improve UX:
+- Add loading state while fetching data
+- Add empty state ("No leave requests")
+- Add status color coding:
+  - Pending → yellow
+  - Approved → green
+  - Rejected → red
+
+6. Clean Code:
+- Move table into reusable component
+- Avoid putting everything in one file
+
+7. Keep design simple and professional (no overdesign)
+
+Goal:
+- Clean, readable, responsive leave table UI
+- Professional dashboard layout for admin and manager 
+ 
 --
